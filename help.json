@@ -1,0 +1,7 @@
+{
+  "1": "Lista las carpetas de un subdirectorio y su tamaño. Las cifras son en GB  y si tiene mucho contenido el subdirectorio tarda un rato en presentar los resultados",
+  "2": "Convierte un fichero fit en gpx. También reduce los puntos manteniendo la información de la geometría y elimina la informacion del pulso cardiaco.\n\nEl fichero de salida se genera en el mismo path con el prefijo reduced_",
+  "3": "Recorta un video al inicio y al final especificando cuando empieza y cuando termina. Se genera en el mismo path con el sufijo _ajustado",
+  "4": "Elimina los ficheros jpg si existe su equivalente RAW (CR3). Al hacer fotos y pedir que se graben en RAW y JPG al final solo quieres quedarte con los RAW para el caso de que se graben los dos. Si sólo se graba en jpg se conserva el fichero",
+  "5": "Copiar fechas del sistema de videos si existe un fichero con el mismo nombre base en A y B. Se utiliza cuando se ha convertido ficheros de video y luego se quiere conservar la fecha del original."
+}

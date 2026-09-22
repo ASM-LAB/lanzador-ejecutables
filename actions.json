@@ -1,0 +1,113 @@
+[
+  {
+  "id": 1,
+  "name": "Lista subcarpetas con su tamaño",
+  "executable": "powershell.exe",
+  "fixed_args": "",
+  "parameters": [
+    {
+      "name": "path",
+      "help": "Ruta del directorio base. Ej: D:\\\\Datos\\\\DATA PAPA",
+      "example": "D:\\\\Datos\\\\DATA PAPA",
+      "prefix": "-Command \"$p='",
+      "suffix": "'; if (!(Test-Path $p)) { Write-Host 'La ruta no existe:' $p; exit }; Get-ChildItem -Path $p -Directory | ForEach-Object { $size = (Get-ChildItem -Path $_.FullName -Recurse -File -ErrorAction SilentlyContinue | Measure-Object Length -Sum).Sum; [PSCustomObject]@{ Carpeta = $_.FullName; Tamano_GB = [math]::Round($size / 1GB, 2) } } | Sort-Object Tamano_GB -Descending | Format-Table -AutoSize\"",
+      "required": true,
+	  "folder": "C"
+    }
+   ]
+  },
+  {
+    "id": 2,
+    "name": "Convertir fichero fit a gpx y reducir tamaño",
+    "executable": "F:\\\\GPS\\\\Conversor\\\\Conversor-reductor-FIT-GPX.exe",
+    "fixed_args": "",
+    "parameters": [
+      {
+        "name": "Fichero a convertir",
+        "help": "Ruta del fichero fit a convertir. Ej: C:\\Users\\Public\\activity.fit",
+        "example": "C:\\activity.fit",
+        "prefix": "",
+        "suffix": "",
+        "required": true,
+		"folder": "F"
+      }
+    ]
+  },
+  {
+  "id": 3,
+  "name": "Recortar por los dos lados un video",
+  "executable": "for",
+  "fixed_args": "",
+  "parameters": [
+    {
+      "name": "Video a recortar",
+      "help": "Ruta del video a convertir. Ej: C:\\Users\\Public\\Video.mp4",
+      "example": "C:\\Users\\Public\\Video.mp4",
+      "prefix": "%F in (\"",
+      "suffix": "\") do \"C:\\Program Files\\ffmpeg\\bin\\ffmpeg.exe\" -i \"%~F\" -ss ",
+      "required": true,
+	  "folder": "F"
+    },
+    {
+      "name": "Tiempo Inicial",
+      "help": "Tiempo inicial donde empieza el video 00:00:05",
+      "example": "00:00:05",
+      "prefix": "",
+      "suffix": " -to",
+      "required": true
+    },
+    {
+      "name": "Tiempo Final",
+      "help": "Tiempo final donde termina el video 00:05:15",
+      "example": "00:05:15",
+      "prefix": "",
+      "suffix": " -c copy \"%~dpnF_ajustado%~xF\" && \"C:\\exiftool\\exiftool.exe\" -overwrite_original -TagsFromFile \"%~fF\" \"-QuickTime:CreateDate\" \"-QuickTime:ModifyDate\" \"-TrackCreateDate\" \"-TrackModifyDate\" \"-MediaCreateDate\" \"-MediaModifyDate\" \"%~dpnF_ajustado%~xF\" && powershell -NoProfile -Command \"$src=Get-Item '%~fF'; $dst=Get-Item '%~dpnF_ajustado%~xF'; $dst.CreationTime=$src.CreationTime; $dst.LastWriteTime=$src.LastWriteTime; $dst.LastAccessTime=$src.LastAccessTime\"",
+      "required": true
+    }
+   ]
+  },
+  {
+  "id": 4,
+  "name": "Elimina los ficheros jpg si existe su equivalente RAW (CR3)",
+  "executable": "powershell.exe",
+  "fixed_args": "",
+  "parameters": [
+    {
+      "name": "path",
+      "help": "Ruta del directorio donde se encuentran las fotos. Ej: C:\\\\Fotos\\\\Sesion1",
+      "example": "C:\\\\Fotos\\\\Sesion1",
+      "prefix": "-Command \"$p='",
+      "suffix": "'; Get-ChildItem -Path $p -Filter *.CR3 | ForEach-Object { $j=Join-Path $p ($_.BaseName + '.jpg'); if (Test-Path $j) { Remove-Item $j -Force; Write-Host 'Eliminado: ' ($_.BaseName + '.jpg') -ForegroundColor Yellow } }\"",
+      "required": true,
+	  "folder": "C"
+    }
+	]
+  },
+  {
+  "id": 5,
+  "name": "Copiar fechas del sistema de videos si existe un fichero con el mismo nombre base en A y B",
+  "executable": "for",
+  "fixed_args": "",
+  "parameters": [
+    {
+      "name": "Carpeta A",
+      "help": "Ruta de la carpeta origen (A). Ej: C:\\Videos\\A",
+      "example": "C:\\Videos\\A",
+      "prefix": "%A in (\"",
+      "suffix": "\") do powershell -NoProfile -Command \"$a='%~A';",
+      "required": true,
+	  "folder": "C"
+    },
+    {
+      "name": "Carpeta B",
+      "help": "Ruta de la carpeta destino (B). Ej: C:\\Videos\\B",
+      "example": "C:\\Videos\\B",
+      "prefix": "$b='",
+      "suffix": "'; Get-ChildItem -Path $a -File | ForEach-Object { $fa=$_; $matches=Get-ChildItem -Path $b -File | Where-Object { $_.BaseName -eq $fa.BaseName }; foreach ($fb in $matches) { $fb.CreationTime=$fa.CreationTime; $fb.LastWriteTime=$fa.LastWriteTime; $fb.LastAccessTime=$fa.LastAccessTime; Write-Host 'Fechas copiadas:' $fb.Name -ForegroundColor Green } }\"",
+      "required": true,
+	  "folder": "C"
+    }
+   ]
+  }
+  
+]
