@@ -66,7 +66,7 @@ Para compilar el programa Python en un archivo ejecutable independiente para Win
 
 2. **Generar el ejecutable sin consola auxiliar (modo GUI):**
    ```bash
-   pyinstaller --noconfirm --onedir --windowed --name "Lanzador ejecutables" "Lanzador ejecutables.py"
+   pyinstaller --onefile --noconsole "Lanzador ejecutables.py"
    ```
 
 3. **Ubicación del resultado:**
